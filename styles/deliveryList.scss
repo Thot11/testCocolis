@@ -1,0 +1,51 @@
+.deliveryListContainer {
+  position: relative;
+  width: 400px;
+  height: auto;
+  margin-top: 15px;
+
+  .listWrapper {
+    height: 100px;
+    max-height: 250px;
+    overflow-y: auto;
+
+    .deliveryContainer {
+      display: flex;
+      align-items: center;
+
+      .dot {
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+      }
+  
+      .id {
+        margin-left: 5px;
+        font-weight: 600;
+      }
+  
+      .title {
+        margin-left: 5px;
+      }
+    }
+  }
+
+  .buttonContainer {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+    margin-top: 10px;
+
+    .loadMoreDelivery {
+      padding: 10px;
+      color: white;
+      background-color: #0160E0;
+      border-radius: 5px;
+
+      &:disabled {
+        background-color: grey;
+        opacity: 0.5;
+      }
+    }
+  }
+}
