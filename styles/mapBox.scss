@@ -1,12 +1,12 @@
 .mapBoxContainer {
   position: relative;
   width: 400px;
-  height: 600px;
+  height: 500px;
   margin-top: 20px;
   overflow: hidden;
 
-  .mapboxgl-marker {
-    transform: translate(-10px, -20px);
+  .customMarker {
+    position: absolute;
   }
 }
 

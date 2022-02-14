@@ -1,4 +1,4 @@
-import React, {useRef, useState, useEffect} from 'react';
+import React from 'react';
 import { IHit } from '../pages/types/type';
 
 interface IDeliveryList {

@@ -1,5 +1,5 @@
-import React, {useRef, useState, useEffect, useMemo} from 'react';
-import ReactMapGL, {Marker, Layer, Source } from 'react-map-gl';
+import React, {useState} from 'react';
+import ReactMapGL, {Marker} from 'react-map-gl';
 import { IHit } from '../pages/types/type';
 
 interface IMapBox {
@@ -15,26 +15,10 @@ const ICON = `M20.2,15.7L20.2,15.7c1.1-1.6,1.8-3.6,1.8-5.7c0-5.6-4.5-10-10-10S2,
 const MapBox: React.FC<IMapBox> = ({deliveryList, numberOfDeliveryDisplayed, markersColor}) => {
   const accessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
   const [viewState, setViewState] = useState({
-    longitude: 2.47306,
+    longitude: 2.3,
     latitude: 49.14222,
     zoom: 3.5, 
   });
-
-  const geojson = {
-    type: 'FeatureCollection',
-    features: [
-      {type: 'Feature', geometry: {type: 'Polygon', coordinates: [-122.4, 37.8]}}
-    ]
-  };
-  
-  const layerStyle = {
-    id: 'point',
-    type: 'circle',
-    paint: {
-      'circle-radius': 10,
-      'circle-color': '#007cbf'
-    }
-  };
 
 
   return (
@@ -50,46 +34,34 @@ const MapBox: React.FC<IMapBox> = ({deliveryList, numberOfDeliveryDisplayed, mar
         {deliveryList.map((delivery, key) => {
           if(key < numberOfDeliveryDisplayed ) {
 
-            const geojson = {
-              type: 'FeatureCollection',
-              features: [
-                {type: 'Feature', geometry: {type: 'Polygon', coordinates: [[delivery._source.from_lat, delivery._source.from_lng], [delivery._source.to_lat, delivery._source.to_lng]]}}
-              ]
-            };
-            
-            const layerStyle = {
-              id: 'point',
-              type: 'circle',
-              paint: {
-                'circle-radius': 10,
-                'circle-color': '#007cbf'
-              }
-            };
+            return (
+              // Offset marker corresponds to mapWidth/2 and mapHeight
+              <Marker latitude={delivery._source.from_lat} longitude={delivery._source.from_lng} anchor="bottom" pitchAlignment={'map'} key={key} offset={[190, -510]}>
+                <svg 
+                  height={viewState.zoom * 3}
+                  viewBox="0 0 24 24"
+                  className='customMarker'
+                >
+                  <path d={ICON} fill={markersColor[delivery._source.id]}/>
+                </svg>
+              </Marker>
+            )
+          }
+        })}
+        
+        {deliveryList.map((delivery, key) => {
+          if(key < numberOfDeliveryDisplayed ) {
 
             return (
-                <>
-                <Marker latitude={delivery._source.from_lat} longitude={delivery._source.from_lng} anchor="bottom" pitchAlignment={'map'} key={key}>
-                  <svg 
-                    height={20}
-                    viewBox="0 0 24 24"
-                  >
-                    <path d={ICON} fill={markersColor[delivery._source.id]}/>
-                  </svg>
-                </Marker>
-
-                <Source id="my-data" type="geojson" data={geojson}>
-                  <Layer {...layerStyle} />
-                </Source>
-                
-                <Marker latitude={delivery._source.to_lat} longitude={delivery._source.to_lng} anchor="bottom" key={-key + 1}>
-                  <svg 
-                    height={20}
-                    viewBox="0 0 24 24"
-                  >
-                    <path d={ICON} fill={markersColor[delivery._source.id]}/>
-                  </svg>
-                </Marker>
-              </>
+              <Marker latitude={delivery._source.to_lat} longitude={delivery._source.to_lng} anchor="bottom" key={delivery._source.id} offset={[190, -510]}>
+                <svg 
+                  height={viewState.zoom * 3}
+                  viewBox="0 0 24 24"
+                  className='customMarker'
+                >
+                  <path d={ICON} fill={markersColor[delivery._source.id]}/>
+                </svg>
+              </Marker>
             )
           }
         })}
